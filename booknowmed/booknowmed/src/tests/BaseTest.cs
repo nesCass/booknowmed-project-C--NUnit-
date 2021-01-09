@@ -13,10 +13,9 @@ namespace booknowmed.src.tests
 	[TestFixture]
 	public abstract class BaseTest
 	{
-
 		protected IWebDriver driver;
 		protected WebDriverWait wait;
-		protected String baseUrl = "https://bnm.neopixdev.com";
+		protected string baseUrl = "https://bnm.neopixdev.com";
 
 
 		[OneTimeSetUp]
@@ -27,9 +26,7 @@ namespace booknowmed.src.tests
 			this.driver.Manage().Timeouts().PageLoad = TimeSpan.FromSeconds(20);
 			this.driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
 			this.driver.Manage().Window.Maximize();
-
 		}
-
 
 
 		[TearDown]
@@ -38,7 +35,6 @@ namespace booknowmed.src.tests
 			this.driver.Manage().Cookies.DeleteAllCookies();
 			this.driver.Navigate().Refresh();
 		}
-
 
 
 		[OneTimeTearDown]
