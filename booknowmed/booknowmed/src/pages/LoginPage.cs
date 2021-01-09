@@ -14,9 +14,6 @@ namespace booknowmed.src.pages
 		{
 		}
 
-
-
-
 		public void LoginUser(string email = null, string password = null, bool remember = true)
 		{
 			this.GetEmailAddress()?.Clear();
@@ -69,11 +66,6 @@ namespace booknowmed.src.pages
 			this.GetCloseBtn()?.Click();
 		}
 
-
-
-
-
-
 		//getters
 
 		public IWebElement GetEmailAddress()
@@ -124,9 +116,5 @@ namespace booknowmed.src.pages
 		{
 			return this.driver.FindElement(By.XPath("//a[@aria-label='Close modal']"));
 		}
-
-
-
-
 	}
 }
