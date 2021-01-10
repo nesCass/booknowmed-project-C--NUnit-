@@ -2,6 +2,7 @@
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -116,5 +117,14 @@ namespace booknowmed.src.pages
 		{
 			return this.driver.FindElement(By.XPath("//a[@aria-label='Close modal']"));
 		}
+
+
+		public ReadOnlyCollection<IWebElement> GetAllAnchorElements()
+		{
+			ReadOnlyCollection<IWebElement> elements = this.driver.FindElements(By.XPath("//bnm-paper[@class='default']//a"));
+
+			return elements;
+		}
+
 	}
 }
