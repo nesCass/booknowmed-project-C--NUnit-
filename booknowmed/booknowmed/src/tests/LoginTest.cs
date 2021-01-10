@@ -1,10 +1,16 @@
 ﻿using booknowmed.src.pages;
 using NUnit.Framework;
+using OpenQA.Selenium;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+
+
 
 namespace booknowmed.src.tests
 {
@@ -12,7 +18,7 @@ namespace booknowmed.src.tests
 	public class LoginTest : BaseTest
 	{
 
-		[Test]
+		[Test, Description("Checking the close button on login form")]
 		public void FirstTest()
 		{
 			LoginPage loginPage = new LoginPage(this.driver, this.wait);
@@ -25,6 +31,55 @@ namespace booknowmed.src.tests
 			var displayed = messagesPage.IsTitleDisplayed();
 
 			Assert.IsFalse(displayed, "Close button is not working");
+		}
+
+
+
+
+
+		[Test, Description("Checking bad links on login form")]
+		public void BrokenLinksTest()
+		{
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			var anchorElements = loginPage.GetAllAnchorElements();
+
+			var broken = BrokenLinks(anchorElements);
+
+			Assert.AreEqual(0, broken);
+		}
+
+		public static int VerifyURLStatus(string urlString)
+		{
+			int status = 0;
+			try
+			{
+				HttpWebRequest request = (HttpWebRequest)WebRequest.Create(urlString);
+				request.Method = "GET";
+				HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+				status = (int)response.StatusCode;
+			}
+			catch (IOException e)
+			{
+				Console.WriteLine(e.ToString());
+			}
+			return status;
+		}
+
+		public static int BrokenLinks(ReadOnlyCollection<IWebElement> anchorElements)
+		{
+			int count = 0;
+
+			foreach (IWebElement webElement in anchorElements)
+			{
+				string link = webElement.GetAttribute("href");
+				Console.WriteLine("Link:  " + link);
+
+				count = VerifyURLStatus(link) == 200 ? count : count + 1;
+			}
+			return count;
 		}
 	}
 }
