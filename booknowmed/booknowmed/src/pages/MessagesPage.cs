@@ -45,5 +45,18 @@ namespace booknowmed.src.pages
 			return this.driver.FindElement(By.XPath("//bnm-validation[text()='Invalid email/password combination.']"));
 		}
 
+
+		public IWebElement GetH1()
+		{
+			return this.driver.FindElement(By.XPath("/html/body/app-root/ng-component/bnm-layout/div[2]/main/div[1]/h1"));
+
+		}
+
+
+		public bool GetSuccessMessage()
+		{
+			return this.wait.Until(ExpectedConditions.TextToBePresentInElement(element: this.GetH1(), text: "Our suggestions (Dialysis HD clinics)"));
+
+		}
 	}
 }
