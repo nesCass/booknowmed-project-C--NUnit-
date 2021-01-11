@@ -31,7 +31,7 @@ namespace booknowmed.src.tests
 
 			loginPage.LoginUser(email, password, remember);
 
-			Assert.AreEqual(true, messagesPage.GetSuccessMessage());
+			Assert.AreEqual(true, messagesPage.GetSuccessMessage(), "[ERROR] You didn't log in with valid credentials!");
 
 			logoutPage.UserLogout();
 		}
@@ -40,7 +40,6 @@ namespace booknowmed.src.tests
 		[Test, Description("Login without password and email")]
 		public void EmptyFiledsLogin()
 		{
-
 			LoginPage loginPage = new LoginPage(this.driver, this.wait);
 			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
 
@@ -54,9 +53,9 @@ namespace booknowmed.src.tests
 
 			Assert.Multiple(() =>
 			{
-				Assert.AreEqual(emailMsg, "Email is required.");
+				Assert.AreEqual(emailMsg, "Email is required.", "[ERROR] Email error message is not displayed!");
 
-				Assert.AreEqual(passMsg, "Password is required.");
+				Assert.AreEqual(passMsg, "Password is required.", "[ERROR] Password error message is not displayed!");
 			});
 		}
 
@@ -94,7 +93,7 @@ namespace booknowmed.src.tests
 
 			var broken = BrokenLinks(anchorElements);
 
-			Assert.AreEqual(0, broken);
+			Assert.AreEqual(0, broken, "[ERROR] Status code is not 200!");
 		}
 
 		public static int VerifyURLStatus(string urlString)
