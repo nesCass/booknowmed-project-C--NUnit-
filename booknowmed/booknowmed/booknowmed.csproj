@@ -61,6 +61,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="src\pages\BasePage.cs" />
     <Compile Include="src\pages\LoginPage.cs" />
+    <Compile Include="src\pages\LogoutPage.cs" />
     <Compile Include="src\pages\MessagesPage.cs" />
     <Compile Include="src\tests\BaseTest.cs" />
     <Compile Include="src\tests\LoginTest.cs" />

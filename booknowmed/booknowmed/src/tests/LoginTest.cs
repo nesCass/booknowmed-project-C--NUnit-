@@ -17,6 +17,28 @@ namespace booknowmed.src.tests
 	[TestFixture]
 	public class LoginTest : BaseTest
 	{
+		[Test, Description("successfully logging with and without the \"Remember me\"")]
+		[TestCase("ivicanklc@gmail.com", "qwerty1234", false)]
+		[TestCase("ivicanklc@gmail.com", "qwerty1234", true)]
+		public void SuccessfulLogin(string email, string password, bool remember)
+		{
+
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
+			LogoutPage logoutPage = new LogoutPage(this.driver, this.wait);
+
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			loginPage.LoginUser(email, password, remember);
+
+
+			Assert.AreEqual(true, messagesPage.GetSuccessMessage());
+
+
+			logoutPage.UserLogout();
+		}
+
+
 
 		[Test, Description("Checking the close button on login form")]
 		public void FirstTest()
@@ -83,3 +105,4 @@ namespace booknowmed.src.tests
 		}
 	}
 }
+
