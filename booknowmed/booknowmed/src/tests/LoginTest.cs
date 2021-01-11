@@ -31,17 +31,40 @@ namespace booknowmed.src.tests
 
 			loginPage.LoginUser(email, password, remember);
 
-
 			Assert.AreEqual(true, messagesPage.GetSuccessMessage());
-
 
 			logoutPage.UserLogout();
 		}
 
 
+		[Test, Description("Login without password and email")]
+		public void EmptyFiledsLogin()
+		{
+
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
+
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			loginPage.GetLoginBtn()?.Click();
+
+			var emailMsg = messagesPage.GetEmailValidationMsg().Text;
+			var passMsg = messagesPage.GetPasswordValidationMsg().Text;
+
+
+			Assert.Multiple(() =>
+			{
+				Assert.AreEqual(emailMsg, "Email is required.");
+
+				Assert.AreEqual(passMsg, "Password is required.");
+			});
+		}
+
+
+
 
 		[Test, Description("Checking the close button on login form")]
-		public void FirstTest()
+		public void CloseButton()
 		{
 			LoginPage loginPage = new LoginPage(this.driver, this.wait);
 			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
@@ -53,6 +76,7 @@ namespace booknowmed.src.tests
 			var displayed = messagesPage.IsTitleDisplayed();
 
 			Assert.IsFalse(displayed, "Close button is not working");
+
 		}
 
 
