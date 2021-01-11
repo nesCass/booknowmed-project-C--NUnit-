@@ -53,13 +53,30 @@ namespace booknowmed.src.tests
 
 			Assert.Multiple(() =>
 			{
-				Assert.AreEqual(emailMsg, "Email is required.", "[ERROR] Email error message is not displayed!");
+				Assert.AreEqual("Email is required.", emailMsg, "[ERROR] Email error message is not displayed!");
 
-				Assert.AreEqual(passMsg, "Password is required.", "[ERROR] Password error message is not displayed!");
+				Assert.AreEqual("Password is required.", passMsg, "[ERROR] Password error message is not displayed!");
 			});
 		}
 
+		[Test, Description("Login with INVALID credentials!")]
+		[TestCase("invalid@email", "invalidPassword")]
+		[TestCase("invalid@email", "qwerty1234")]
+		[TestCase("ivicanklc@gmail.com", "invalidPassword")]
+		public void IvalidCredentialsLogin(string email, string password)
+		{
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
 
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			loginPage.LoginUser(email, password);
+			System.Threading.Thread.Sleep(2000);
+
+			var msg = messagesPage.GetInvalidCombinationMsg().Text;
+
+			Assert.AreEqual("Invalid email/password combination.", msg, "[ERROR] You log in with INVALID credentials!");
+		}
 
 
 		[Test, Description("Checking the close button on login form")]
