@@ -22,7 +22,6 @@ namespace booknowmed.src.tests
 		[TestCase("ivicanklc@gmail.com", "qwerty1234", true)]
 		public void SuccessfulLogin(string email, string password, bool remember)
 		{
-
 			LoginPage loginPage = new LoginPage(this.driver, this.wait);
 			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
 			LogoutPage logoutPage = new LogoutPage(this.driver, this.wait);
@@ -59,6 +58,7 @@ namespace booknowmed.src.tests
 			});
 		}
 
+
 		[Test, Description("Login with INVALID credentials!")]
 		[TestCase("invalid@email", "invalidPassword")]
 		[TestCase("invalid@email", "qwerty1234")]
@@ -79,6 +79,51 @@ namespace booknowmed.src.tests
 		}
 
 
+		[Test, Description("Check that the cursor is focused on the Email field")]
+		public void CursorOnEmailField()
+		{
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			var expectedElement = loginPage.GetEmailAddress();
+			var actualElement = this.driver.SwitchTo().ActiveElement();
+
+			Assert.AreEqual(expectedElement, actualElement);
+		}
+
+		[Test]
+		public void TabFunctionality() 
+		{
+			LoginPage loginPage = new LoginPage(this.driver, this.wait);
+			MessagesPage messagesPage = new MessagesPage(this.driver, this.wait);
+
+			this.driver.Navigate().GoToUrl(this.baseUrl + "/dialysis/login");
+
+			this.driver.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
+			System.Threading.Thread.Sleep(1000);
+			this.driver.SwitchTo().ActiveElement().SendKeys(Keys.Tab);
+			System.Threading.Thread.Sleep(1000);
+			this.driver.SwitchTo().ActiveElement().SendKeys(Keys.Enter);
+			System.Threading.Thread.Sleep(1000);
+
+			var emailMsg = messagesPage.GetEmailValidationMsg().Text;
+			var passMsg = messagesPage.GetPasswordValidationMsg().Text;
+
+
+			Assert.Multiple(() =>
+			{
+				Assert.AreEqual("Email is required.", emailMsg, "[ERROR] Email error message is not displayed!");
+
+				Assert.AreEqual("Password is required.", passMsg, "[ERROR] Password error message is not displayed!");
+			});
+
+
+
+
+		}
+
+
+
 		[Test, Description("Checking the close button on login form")]
 		public void CloseButton()
 		{
@@ -92,11 +137,7 @@ namespace booknowmed.src.tests
 			var displayed = messagesPage.IsTitleDisplayed();
 
 			Assert.IsFalse(displayed, "Close button is not working");
-
 		}
-
-
-
 
 
 		[Test, Description("Checking bad links on login form")]
