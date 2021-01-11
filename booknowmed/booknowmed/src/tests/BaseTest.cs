@@ -1,9 +1,11 @@
 ﻿using NUnit.Framework;
+using NUnit.Framework.Interfaces;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Firefox;
 using OpenQA.Selenium.Support.UI;
 using System;
 using System.Collections.Generic;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -32,6 +34,11 @@ namespace booknowmed.src.tests
 		[TearDown]
 		public void AfterMethod()
 		{
+			if (TestContext.CurrentContext.Result.Outcome == ResultState.Success)
+			{
+				var screenshot = ((ITakesScreenshot)this.driver).GetScreenshot();
+				screenshot.SaveAsFile(@"C:\Users\ivica\Desktop\RODJENDAN\booknowmed-project-C--NUnit-\Screenshot.jpg");
+			}
 			this.driver.Manage().Cookies.DeleteAllCookies();
 			this.driver.Navigate().Refresh();
 		}
